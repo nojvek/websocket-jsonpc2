@@ -304,7 +304,7 @@ describe('Server', () => {
         assert.throws(() => new Server(socketServer).api())
         Proxy = origProxy
     })
-    
+
     describe('Client MessageError', () => {
         it('returns the values supplied in the constructor for the getters', () => {
             const error = new MessageError(1234, 'Some error happened', 'custom data');
