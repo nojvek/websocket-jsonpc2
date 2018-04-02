@@ -31,10 +31,10 @@ export class MessageError extends Error implements JsonRpc2.Error {
     private _code: JsonRpc2.ErrorCode;
     private _data?: any;
 
-    constructor(code: JsonRpc2.ErrorCode, message: string, data?: any) {
-        super(message);
-        this._code = code;
-        this._data = data;
+    constructor(error: JsonRpc2.Error) {
+        super(error.message);
+        this._code = error.code || 0;
+        this._data = error.data || null;
     }
 
     public get code(): JsonRpc2.ErrorCode {
@@ -98,7 +98,7 @@ export class Client extends EventEmitter implements JsonRpc2.Client {
                 if (message.result) {
                     promise.resolve(message.result)
                 } else if (message.error) {
-                    promise.reject(new MessageError(message.error.code, message.error.message, message.error.data))
+                    promise.reject(new MessageError(message.error))
                 } else {
                     this.emit('error', new Error(`Response must have result or error: ${messageStr}`))
                 }
