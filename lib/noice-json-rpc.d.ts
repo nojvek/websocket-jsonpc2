@@ -24,7 +24,7 @@ export interface ServerOpts extends LogOpts {
 export declare class MessageError extends Error implements JsonRpc2.Error {
     private _code;
     private _data?;
-    constructor(code: JsonRpc2.ErrorCode, message: string, data?: any);
+    constructor(error: JsonRpc2.Error);
     readonly code: JsonRpc2.ErrorCode;
     readonly data: any;
 }

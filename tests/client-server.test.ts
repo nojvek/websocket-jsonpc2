@@ -307,7 +307,7 @@ describe('Server', () => {
 
     describe('Client MessageError', () => {
         it('returns the values supplied in the constructor for the getters', () => {
-            const error = new MessageError(1234, 'Some error happened', 'custom data');
+            const error = new MessageError({code: 1234, message: 'Some error happened', data: 'custom data'});
             assert.equal(error.code, 1234);
             assert.equal(error.message, 'Some error happened');
             assert.equal(error.data, 'custom data');
