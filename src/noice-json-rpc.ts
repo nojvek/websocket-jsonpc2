@@ -374,7 +374,7 @@ export class Server extends EventEmitter implements JsonRpc2.Server {
                     target[prop] = this.api(`${prop}.`)
 
                 } else if (prop === 'on') {
-                    target[prop] = (method:string, handler: Function) => this.on(`${prefix}${method}`, handler)
+                    target[prop] = (method: string, handler: Function) => this.on(`${prefix}${method}`, handler)
                 } else if (prop === 'emit') {
                     target[prop] = (method: string, params: any) => this.notify(`${prefix}${method}`, params)
 
