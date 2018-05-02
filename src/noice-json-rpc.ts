@@ -183,7 +183,7 @@ export class Client extends EventEmitter implements JsonRpc2.Client {
                 // Special handling for prototype so console intellisense works on noice objects
                 if (prop === '__proto__' || prop === 'prototype') {
                     return Object.prototype
-                } else if (prefix === void 0) { // Prefix is undefined. Create domain prefix
+                } else if (prefix === undefined) { // Prefix is undefined. Create domain prefix
                     target[prop] = this.api(`${prop}.`)
 
                 } else if (prop === 'on') {
@@ -370,7 +370,7 @@ export class Server extends EventEmitter implements JsonRpc2.Server {
 
                 if (prop === '__proto__' || prop === 'prototype') {
                     return Object.prototype
-                } else if (prefix === void 0) {
+                } else if (prefix === undefined) {
                     target[prop] = this.api(`${prop}.`)
 
                 } else if (prop === 'on') {
