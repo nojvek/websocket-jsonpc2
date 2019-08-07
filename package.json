@@ -13,7 +13,7 @@
     "pretest": "tsc -p tests",
     "test": "istanbul cover node_modules/.bin/_mocha -- -R spec out/*.test.js",
     "tslint": "tslint -c tslint.json src/*.ts tests/*.ts",
-    "mocha-debug": "mocha --debug-brk -R spec out/*.test.js",
+    "mocha-debug": "mocha --inspect-brk -R spec out/*.test.js",
     "coveralls": "cat coverage/lcov.info | node_modules/.bin/coveralls",
     "example": "node out/example.js"
   },
