@@ -46,6 +46,8 @@ export class MessageError extends Error implements JsonRpc2.Error {
     }
 }
 
+const inspectSymbol = Symbol.for('nodejs.util.inspect.custom');
+
 /**
  * Creates a RPC Client.
  * It is intentional that Client does not create a WebSocket object since we prefer composability
@@ -176,16 +178,24 @@ export class Client extends EventEmitter implements JsonRpc2.Client {
         }
 
         return new Proxy({}, {
-            get: (target: any, prop: string) => {
+            get: (target: any, prop: PropertyKey) => {
                 if (target[prop]) {
                     return target[prop]
+                } else if (typeof prop !== 'string') {
+                    if (prop === inspectSymbol || prop === Symbol.toStringTag) {
+                        return this.printProxyWithPrefix(prefix);
+                    } else { // We know that target[prop] is false, and no domain has this name, so we return undefined
+                        return undefined;
+                    }
                 }
+
                 // Special handling for prototype so console intellisense works on noice objects
                 if (prop === '__proto__' || prop === 'prototype') {
                     return Object.prototype
+                } else if (prop === 'toString') {
+                    target[prop] = () => this.printProxyWithPrefix(prefix)
                 } else if (prefix === undefined) { // Prefix is undefined. Create domain prefix
                     target[prop] = this.api(`${prop}.`)
-
                 } else if (prop === 'on') {
                     target[prop] = (method: string, handler: Function) => this.on(`${prefix}${method}`, handler)
                 } else if (prop === 'emit') {
@@ -206,6 +216,10 @@ export class Client extends EventEmitter implements JsonRpc2.Client {
                 return target[prop]
             }
         })
+    }
+
+    private printProxyWithPrefix(prefix: string): string {
+        return prefix ? `JSON RPC Domain [${prefix}]` : `JSON RPC Client`;
     }
 }
 

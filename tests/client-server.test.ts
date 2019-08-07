@@ -172,6 +172,16 @@ describe('Client', () => {
         assert(logEmit.calledOnce, 'logEmit.calledOnce')
         assert(logConsole.calledOnce, 'logEmit.calledOnce')
     })
+
+    it('gameClient accepts toString', () => {
+        const api: GameClient = new Client(socket).api()
+        assertExpr(() => api.toString() === '[object JSON RPC Client]')
+    })
+
+    it('domains accepts toString', () => {
+        const api: GameClientApi = new Client(socket).api()
+        assertExpr(() => api.game.toString() === '[object JSON RPC Domain [game.]]')
+    })
 })
 
 describe('Server', () => {
